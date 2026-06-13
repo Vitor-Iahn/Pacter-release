@@ -3,484 +3,403 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pacter — Seu portfólio, seu ritmo</title>
-  <meta name="description" content="Pacter agrega seus investimentos de qualquer corretora em um só lugar. Grátis, para Windows." />
+  <title>Pacter — Veja a verdade sobre o seu dinheiro</title>
+  <meta name="description" content="Pacter reúne seus investimentos de qualquer corretora em um só lugar e mostra o desempenho real do seu patrimônio. Grátis, para Windows." />
+
+  <!-- ============================================================ -->
+  <!-- PLACEHOLDER 1 — GOOGLE ANALYTICS                              -->
+  <!-- Cole aqui o trecho que o Google Analytics te der (com seu ID).-->
+  <!-- ============================================================ -->
+  <!--
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+  </script>
+  -->
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:        #0D1117;
-      --panel:     #161B22;
-      --border:    #21262D;
-      --green:     #00C896;
-      --green-dim: #00C89622;
-      --text:      #F0F4F8;
-      --muted:     #8B9BB4;
-      --font-display: 'Sora', sans-serif;
-      --font-body:    'Inter', sans-serif;
+      /* Paleta — direto do documento de marca */
+      --verde-fundo:   #0E2A23;
+      --verde-fundo-2: #0A1F1A;
+      --verde-comando: #00C896;
+      --painel:        #13322A;
+      --borda:         #1F4338;
+      --branco-frio:   #F0F4F8;
+      --prata:         #C9D1D9;
+      --cinza:         #7E9189;
+      --sans: 'Inter', sans-serif;
+      --mono: 'JetBrains Mono', monospace;
     }
 
     html { scroll-behavior: smooth; }
-
     body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--font-body);
-      font-size: 1rem;
-      line-height: 1.6;
+      background: var(--verde-fundo); color: var(--branco-frio);
+      font-family: var(--sans); font-size: 1rem; line-height: 1.65;
       -webkit-font-smoothing: antialiased;
     }
+    .wrap { max-width: 1080px; margin: 0 auto; padding: 0 1.5rem; }
 
-    /* ── NAV ── */
+    /* NAV */
     nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1rem 2rem;
-      background: rgba(13, 17, 23, 0.85);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.9rem 1.5rem; background: rgba(14, 42, 35, 0.82);
+      backdrop-filter: blur(12px); border-bottom: 1px solid var(--borda);
     }
-
-    .nav-logo {
-      font-family: var(--font-display);
-      font-weight: 700;
-      font-size: 1.2rem;
-      color: var(--text);
-      text-decoration: none;
-      letter-spacing: -0.02em;
-    }
-
-    .nav-logo span { color: var(--green); }
-
+    .nav-brand { display: flex; align-items: center; gap: 0.6rem; text-decoration: none; }
+    .nav-brand img { width: 30px; height: 30px; border-radius: 7px; }
+    .nav-brand span { font-weight: 700; font-size: 1.15rem; color: var(--branco-frio); letter-spacing: -0.01em; }
     .nav-cta {
-      background: var(--green);
-      color: #0D1117;
-      font-family: var(--font-body);
-      font-weight: 500;
-      font-size: 0.875rem;
-      padding: 0.5rem 1.25rem;
-      border-radius: 6px;
-      text-decoration: none;
-      transition: opacity 0.15s;
+      background: var(--verde-comando); color: var(--verde-fundo); font-weight: 600;
+      font-size: 0.85rem; padding: 0.5rem 1.2rem; border-radius: 7px;
+      text-decoration: none; transition: opacity 0.15s;
     }
+    .nav-cta:hover { opacity: 0.88; }
 
-    .nav-cta:hover { opacity: 0.85; }
-
-    /* ── HERO ── */
+    /* HERO */
     .hero {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
+      min-height: 100vh; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; text-align: center;
       padding: 8rem 1.5rem 4rem;
+      background:
+        radial-gradient(ellipse 80% 50% at 50% 0%, rgba(0, 200, 150, 0.10), transparent 70%),
+        linear-gradient(180deg, var(--verde-fundo) 0%, var(--verde-fundo-2) 100%);
     }
-
     .hero-eyebrow {
-      font-size: 0.75rem;
-      font-weight: 500;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--green);
+      font-family: var(--mono); font-size: 0.72rem; font-weight: 500;
+      letter-spacing: 0.18em; text-transform: uppercase; color: var(--verde-comando);
       margin-bottom: 1.5rem;
     }
-
     .hero-title {
-      font-family: var(--font-display);
-      font-size: clamp(2.4rem, 6vw, 4.5rem);
-      font-weight: 700;
-      line-height: 1.1;
-      letter-spacing: -0.03em;
-      max-width: 800px;
-      margin-bottom: 1.5rem;
+      font-size: clamp(2.4rem, 6vw, 4.4rem); font-weight: 700; line-height: 1.08;
+      letter-spacing: -0.03em; max-width: 820px; margin-bottom: 1.5rem;
     }
-
-    .hero-title em {
-      font-style: normal;
-      color: var(--green);
-    }
-
-    .hero-sub {
-      font-size: clamp(1rem, 2vw, 1.2rem);
-      color: var(--muted);
-      max-width: 520px;
-      margin-bottom: 2.5rem;
-      line-height: 1.7;
-    }
-
-    .hero-actions {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
+    .hero-title em { font-style: normal; color: var(--verde-comando); }
+    .hero-sub { font-size: clamp(1rem, 2vw, 1.18rem); color: var(--prata); max-width: 560px; margin-bottom: 2.5rem; }
+    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
 
     .btn-primary {
-      background: var(--green);
-      color: #0D1117;
-      font-family: var(--font-body);
-      font-weight: 500;
-      font-size: 1rem;
-      padding: 0.85rem 2rem;
-      border-radius: 8px;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
+      background: var(--verde-comando); color: var(--verde-fundo); font-weight: 600;
+      font-size: 1rem; padding: 0.9rem 2rem; border-radius: 9px; text-decoration: none;
+      display: inline-flex; align-items: center; gap: 0.5rem;
       transition: opacity 0.15s, transform 0.15s;
     }
-
-    .btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
-
+    .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
     .btn-secondary {
-      background: transparent;
-      color: var(--muted);
-      font-family: var(--font-body);
-      font-size: 0.95rem;
-      padding: 0.85rem 1.5rem;
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      text-decoration: none;
-      transition: border-color 0.15s, color 0.15s;
+      background: transparent; color: var(--prata); font-size: 0.95rem;
+      padding: 0.9rem 1.5rem; border-radius: 9px; border: 1px solid var(--borda);
+      text-decoration: none; transition: border-color 0.15s, color 0.15s;
     }
+    .btn-secondary:hover { border-color: var(--cinza); color: var(--branco-frio); }
 
-    .btn-secondary:hover { border-color: var(--muted); color: var(--text); }
-
-    /* ── STATS ── */
     .stats {
-      display: flex;
-      gap: 3rem;
-      justify-content: center;
-      flex-wrap: wrap;
-      margin-top: 4rem;
-      padding-top: 3rem;
-      border-top: 1px solid var(--border);
+      display: flex; gap: 3rem; justify-content: center; flex-wrap: wrap;
+      margin-top: 4rem; padding-top: 3rem; border-top: 1px solid var(--borda);
     }
+    .stat-number { font-family: var(--mono); font-size: 2rem; font-weight: 700; color: var(--verde-comando); display: block; }
+    .stat-label { font-size: 0.78rem; color: var(--cinza); text-transform: uppercase; letter-spacing: 0.08em; }
 
-    .stat-item { text-align: center; }
-
-    .stat-number {
-      font-family: var(--font-display);
-      font-size: 2rem;
-      font-weight: 700;
-      color: var(--green);
-      display: block;
-    }
-
-    .stat-label {
-      font-size: 0.8rem;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-    }
-
-    /* ── SCREENSHOT PLACEHOLDER ── */
-    .screenshot-section {
-      padding: 2rem 1.5rem 5rem;
-      display: flex;
-      justify-content: center;
-    }
-
-    .screenshot-wrap {
-      position: relative;
-      max-width: 900px;
-      width: 100%;
-    }
-
-    .screenshot-glow {
-      position: absolute;
-      inset: -40px;
-      background: radial-gradient(ellipse at center, rgba(0, 200, 150, 0.12) 0%, transparent 70%);
-      pointer-events: none;
-    }
-
-    .screenshot-frame {
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      overflow: hidden;
-      background: var(--panel);
-      aspect-ratio: 16/9;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 1rem;
-      color: var(--muted);
-      font-size: 0.9rem;
-      position: relative;
-    }
-
-    .screenshot-frame img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-
-    .screenshot-placeholder-icon {
-      font-size: 2.5rem;
-      opacity: 0.3;
-    }
-
-    /* ── FEATURES ── */
-    .features {
-      padding: 5rem 1.5rem;
-      max-width: 1000px;
-      margin: 0 auto;
-    }
-
+    /* SEÇÕES */
+    section.bloco { padding: 5.5rem 0; }
     .section-label {
-      font-size: 0.75rem;
-      font-weight: 500;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--green);
-      text-align: center;
-      margin-bottom: 1rem;
+      font-family: var(--mono); font-size: 0.72rem; font-weight: 500;
+      letter-spacing: 0.18em; text-transform: uppercase; color: var(--verde-comando);
+      text-align: center; margin-bottom: 1rem;
     }
+    .section-title { font-size: clamp(1.7rem, 3.5vw, 2.5rem); font-weight: 700; text-align: center; letter-spacing: -0.02em; margin-bottom: 1rem; }
+    .section-intro { text-align: center; color: var(--prata); max-width: 600px; margin: 0 auto 3.5rem; }
 
-    .section-title {
-      font-family: var(--font-display);
-      font-size: clamp(1.6rem, 3.5vw, 2.4rem);
-      font-weight: 700;
-      text-align: center;
-      letter-spacing: -0.02em;
-      margin-bottom: 3.5rem;
+    /* VÍDEO */
+    .video-wrap {
+      position: relative; max-width: 880px; margin: 0 auto;
+      border: 1px solid var(--borda); border-radius: 14px; overflow: hidden;
+      background: var(--painel); box-shadow: 0 20px 60px rgba(0,0,0,0.4);
     }
-
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 1.5rem;
+    .video-ratio { position: relative; padding-top: 56.25%; }
+    .video-ratio iframe, .video-placeholder { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+    .video-placeholder {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 1rem; color: var(--cinza); background: var(--painel);
     }
-
-    .feature-card {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 1.75rem;
-      transition: border-color 0.2s;
+    .video-placeholder .play {
+      width: 64px; height: 64px; border-radius: 50%; background: var(--verde-comando);
+      color: var(--verde-fundo); display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem; padding-left: 5px;
     }
+    .video-placeholder code { font-family: var(--mono); font-size: 0.78rem; color: var(--cinza); }
 
-    .feature-card:hover { border-color: var(--green); }
-
-    .feature-icon {
-      font-size: 1.5rem;
-      margin-bottom: 1rem;
-      display: block;
+    /* SCREENSHOT */
+    .shot-wrap { position: relative; max-width: 920px; margin: 0 auto; }
+    .shot-glow { position: absolute; inset: -40px; background: radial-gradient(ellipse at center, rgba(0,200,150,0.12), transparent 70%); pointer-events: none; }
+    .shot-frame {
+      position: relative; border: 1px solid var(--borda); border-radius: 12px; overflow: hidden;
+      background: var(--painel); aspect-ratio: 16/9; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 0.75rem; color: var(--cinza);
     }
+    .shot-frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .shot-frame .icon { font-size: 2.5rem; opacity: 0.35; }
+    .shot-frame code { font-family: var(--mono); font-size: 0.78rem; }
 
-    .feature-title {
-      font-family: var(--font-display);
-      font-size: 1rem;
-      font-weight: 600;
-      margin-bottom: 0.5rem;
+    /* FEATURES */
+    .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem; }
+    .feature-card { background: var(--painel); border: 1px solid var(--borda); border-radius: 13px; padding: 1.75rem; transition: border-color 0.2s; }
+    .feature-card:hover { border-color: var(--verde-comando); }
+    .feature-icon { font-size: 1.5rem; margin-bottom: 0.9rem; display: block; }
+    .feature-title { font-size: 1.05rem; font-weight: 600; margin-bottom: 0.5rem; }
+    .feature-desc { font-size: 0.92rem; color: var(--cinza); }
+
+    /* CAMADA PROFUNDA */
+    .depth { background: var(--verde-fundo-2); border-block: 1px solid var(--borda); }
+    .depth-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
+    .depth-text h2 { font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 700; letter-spacing: -0.02em; margin-bottom: 1.25rem; line-height: 1.2; }
+    .depth-text p { color: var(--prata); margin-bottom: 1rem; }
+    .depth-visual { font-family: var(--mono); background: var(--painel); border: 1px solid var(--borda); border-radius: 12px; padding: 1.5rem; font-size: 0.85rem; line-height: 2; }
+    .depth-visual .row { display: flex; justify-content: space-between; }
+    .depth-visual .up { color: var(--verde-comando); }
+    .depth-visual .label { color: var(--cinza); }
+
+    /* PROVA SOCIAL */
+    .depo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; }
+    .depo-card { background: var(--painel); border: 1px solid var(--borda); border-radius: 13px; padding: 1.75rem; }
+    .depo-text { color: var(--branco-frio); margin-bottom: 1.25rem; font-style: italic; }
+    .depo-author { display: flex; align-items: center; gap: 0.75rem; }
+    .depo-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--borda); display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 0.85rem; color: var(--verde-comando); }
+    .depo-name { font-weight: 600; font-size: 0.9rem; }
+    .depo-role { font-size: 0.8rem; color: var(--cinza); }
+
+    /* FAQ */
+    .faq-list { max-width: 720px; margin: 0 auto; }
+    .faq-item { border-bottom: 1px solid var(--borda); }
+    .faq-q {
+      width: 100%; text-align: left; background: none; border: none; cursor: pointer;
+      color: var(--branco-frio); font-family: var(--sans); font-size: 1.05rem; font-weight: 500;
+      padding: 1.4rem 0; display: flex; justify-content: space-between; align-items: center; gap: 1rem;
     }
+    .faq-q .sinal { color: var(--verde-comando); font-size: 1.4rem; flex-shrink: 0; transition: transform 0.2s; }
+    .faq-item.aberto .sinal { transform: rotate(45deg); }
+    .faq-a { max-height: 0; overflow: hidden; color: var(--cinza); transition: max-height 0.25s ease, padding 0.25s ease; }
+    .faq-item.aberto .faq-a { max-height: 300px; padding-bottom: 1.4rem; }
 
-    .feature-desc {
-      font-size: 0.9rem;
-      color: var(--muted);
-      line-height: 1.6;
-    }
+    /* CTA FINAL */
+    .cta-final { text-align: center; padding: 6rem 1.5rem; }
+    .cta-final h2 { font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 700; letter-spacing: -0.02em; margin-bottom: 1rem; }
+    .cta-final p { color: var(--prata); margin-bottom: 2.5rem; }
+    .os-badge { display: inline-flex; align-items: center; gap: 0.4rem; font-family: var(--mono); font-size: 0.78rem; color: var(--cinza); margin-top: 1rem; }
 
-    /* ── CTA FINAL ── */
-    .cta-section {
-      padding: 6rem 1.5rem;
-      text-align: center;
-      border-top: 1px solid var(--border);
-    }
+    /* FOOTER */
+    footer { border-top: 1px solid var(--borda); padding: 2rem 1.5rem; text-align: center; color: var(--cinza); font-size: 0.82rem; }
+    footer a { color: var(--cinza); text-decoration: none; }
+    footer a:hover { color: var(--branco-frio); }
 
-    .cta-title {
-      font-family: var(--font-display);
-      font-size: clamp(1.8rem, 4vw, 3rem);
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      margin-bottom: 1rem;
-    }
-
-    .cta-sub {
-      color: var(--muted);
-      font-size: 1rem;
-      margin-bottom: 2.5rem;
-    }
-
-    .os-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      font-size: 0.78rem;
-      color: var(--muted);
-      margin-top: 1rem;
-    }
-
-    /* ── FOOTER ── */
-    footer {
-      border-top: 1px solid var(--border);
-      padding: 2rem 1.5rem;
-      text-align: center;
-      color: var(--muted);
-      font-size: 0.8rem;
-    }
-
-    footer a { color: var(--muted); text-decoration: none; }
-    footer a:hover { color: var(--text); }
-
-    /* ── RESPONSIVO ── */
-    @media (max-width: 600px) {
-      nav { padding: 0.875rem 1.25rem; }
+    /* RESPONSIVO */
+    @media (max-width: 760px) {
+      .depth-grid { grid-template-columns: 1fr; gap: 2rem; }
       .stats { gap: 2rem; }
     }
-
-    @media (prefers-reduced-motion: reduce) {
-      * { transition: none !important; animation: none !important; }
-    }
+    @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
   </style>
 </head>
 <body>
 
-  <!-- NAV -->
   <nav>
-    <a href="#" class="nav-logo">Pacter<span>.</span></a>
+    <a href="#" class="nav-brand">
+      <!-- PLACEHOLDER 2 — LOGO: suba pacter.png no repositório -->
+      <img src="pacter.png" alt="Pacter" onerror="this.style.display='none'" />
+      <span>Pacter</span>
+    </a>
     <a href="#download" class="nav-cta">Baixar grátis</a>
   </nav>
 
-  <!-- HERO -->
-  <section class="hero">
+  <!-- HERO — leitura rasa (entrada acessível) -->
+  <header class="hero">
     <p class="hero-eyebrow">Finanças pessoais · Windows · Grátis</p>
-    <h1 class="hero-title">
-      Todos os seus investimentos,<br /><em>em um só lugar</em>
-    </h1>
+    <h1 class="hero-title">Veja a <em>verdade</em><br />sobre o seu dinheiro</h1>
     <p class="hero-sub">
-      Pacter agrega seu portfólio de qualquer corretora, mostra o desempenho real dos seus ativos e mantém tudo sincronizado — sem planilha, sem trabalho manual.
+      O Pacter reúne seus investimentos de qualquer corretora em um só lugar e mostra o desempenho real do seu patrimônio — sem planilha, sem visão fragmentada, sem ilusão de rentabilidade.
     </p>
     <div class="hero-actions">
-      <a href="#download" class="btn-primary">
-        ⬇ Baixar para Windows
-      </a>
-      <a href="#funcionalidades" class="btn-secondary">Ver funcionalidades</a>
+      <a href="#download" class="btn-primary">⬇ Baixar para Windows</a>
+      <a href="#demo" class="btn-secondary">Ver em ação</a>
     </div>
-
     <div class="stats">
-      <div class="stat-item">
-        <span class="stat-number" data-target="100">0</span>
-        <span class="stat-label">usuários ativos</span>
-      </div>
-      <div class="stat-item">
-        <span class="stat-number">100%</span>
-        <span class="stat-label">gratuito</span>
-      </div>
-      <div class="stat-item">
-        <span class="stat-number">BR</span>
-        <span class="stat-label">feito para o Brasil</span>
-      </div>
+      <div><span class="stat-number" data-target="100">0</span><span class="stat-label">no comando</span></div>
+      <div><span class="stat-number">100%</span><span class="stat-label">gratuito</span></div>
+      <div><span class="stat-number">BR</span><span class="stat-label">feito para o Brasil</span></div>
     </div>
-  </section>
+  </header>
 
-  <!-- SCREENSHOT -->
-  <section class="screenshot-section">
-    <div class="screenshot-wrap">
-      <div class="screenshot-glow"></div>
-      <div class="screenshot-frame" id="screenshot-frame">
-        <!-- Quando tiver o print: substitua o bloco abaixo por <img src="screenshot.png" alt="Pacter app" /> -->
-        <span class="screenshot-placeholder-icon">🖥</span>
-        <span>Screenshot em breve</span>
+  <!-- VÍDEO -->
+  <section class="bloco" id="demo">
+    <div class="wrap">
+      <p class="section-label">Demonstração</p>
+      <h2 class="section-title">Veja o Pacter funcionando</h2>
+      <p class="section-intro">Menos de um minuto para entender como tudo se conecta.</p>
+      <div class="video-wrap">
+        <div class="video-ratio">
+          <!-- ============================================================ -->
+          <!-- PLACEHOLDER 3 — VÍDEO DO YOUTUBE                              -->
+          <!-- Descomente o iframe e troque SEU_ID_DO_VIDEO. Depois apague   -->
+          <!-- a div .video-placeholder.                                     -->
+          <!-- ============================================================ -->
+          <!--
+          <iframe
+            src="https://www.youtube.com/embed/SEU_ID_DO_VIDEO"
+            title="Demonstração do Pacter"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen></iframe>
+          -->
+          <div class="video-placeholder">
+            <div class="play">▶</div>
+            <code>&lt;!-- vídeo do YouTube entra aqui --&gt;</code>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- FEATURES -->
-  <section class="features" id="funcionalidades">
-    <p class="section-label">Funcionalidades</p>
-    <h2 class="section-title">Tudo que você precisa acompanhar</h2>
+  <section class="bloco" id="funcionalidades">
+    <div class="wrap">
+      <p class="section-label">Funcionalidades</p>
+      <h2 class="section-title">Tudo que você precisa acompanhar</h2>
+      <p class="section-intro">Do portfólio ao fluxo de caixa, uma visão única do que é seu.</p>
+      <div class="features-grid">
+        <div class="feature-card"><span class="feature-icon">📊</span><h3 class="feature-title">Portfólio consolidado</h3><p class="feature-desc">Ações, FIIs, ETFs e renda fixa de qualquer corretora reunidos em uma visão única, com preços atualizados automaticamente.</p></div>
+        <div class="feature-card"><span class="feature-icon">🏦</span><h3 class="feature-title">Controle bancário</h3><p class="feature-desc">Cadastre suas contas e acompanhe o fluxo de caixa junto com seus investimentos, sem alternar entre apps.</p></div>
+        <div class="feature-card"><span class="feature-icon">📈</span><h3 class="feature-title">Desempenho real</h3><p class="feature-desc">Veja quanto cada ativo rendeu de verdade, com histórico e variações que fazem sentido para o investidor brasileiro.</p></div>
+        <div class="feature-card"><span class="feature-icon">🔒</span><h3 class="feature-title">Seus dados, seu comando</h3><p class="feature-desc">Nenhuma senha de corretora é solicitada. Você insere os dados — o controle é sempre seu.</p></div>
+        <div class="feature-card"><span class="feature-icon">💡</span><h3 class="feature-title">Insights automáticos</h3><p class="feature-desc">O Pacter identifica padrões e concentrações no seu portfólio, ajudando você a decidir com clareza.</p></div>
+        <div class="feature-card"><span class="feature-icon">🇧🇷</span><h3 class="feature-title">Feito para o Brasil</h3><p class="feature-desc">Moeda, tributação e ativos brasileiros tratados como cidadãos de primeira classe — não como adaptação de apps estrangeiros.</p></div>
+      </div>
+    </div>
+  </section>
 
-    <div class="features-grid">
-      <div class="feature-card">
-        <span class="feature-icon">📊</span>
-        <h3 class="feature-title">Portfólio consolidado</h3>
-        <p class="feature-desc">Ações, FIIs, ETFs e renda fixa de qualquer corretora reunidos em uma visão única, com preços atualizados automaticamente.</p>
+  <!-- SCREENSHOT -->
+  <section class="bloco">
+    <div class="wrap">
+      <div class="shot-wrap">
+        <div class="shot-glow"></div>
+        <div class="shot-frame">
+          <!-- ============================================================ -->
+          <!-- PLACEHOLDER 4 — SCREENSHOT DO APP                            -->
+          <!-- Troque por: <img src="screenshot.png" alt="Pacter em uso" /> -->
+          <!-- ============================================================ -->
+          <span class="icon">🖥</span>
+          <code>&lt;!-- screenshot.png entra aqui --&gt;</code>
+        </div>
       </div>
-      <div class="feature-card">
-        <span class="feature-icon">🏦</span>
-        <h3 class="feature-title">Controle bancário</h3>
-        <p class="feature-desc">Cadastre suas contas e acompanhe o fluxo de caixa junto com seus investimentos, sem precisar alternar entre apps.</p>
+    </div>
+  </section>
+
+  <!-- CAMADA PROFUNDA — leitura profunda (recompensa o investidor maduro) -->
+  <section class="bloco depth">
+    <div class="wrap">
+      <div class="depth-grid">
+        <div class="depth-text">
+          <p class="section-label" style="text-align:left;">Construído para durar</p>
+          <h2>Patrimônio que atravessa ciclos</h2>
+          <p>Mercados sobem e descem. O Pacter foi pensado para quem olha além do trade de hoje — para quem constrói uma fundação que continua de pé através das crises.</p>
+          <p>Acompanhe a evolução real do seu patrimônio ao longo do tempo, entenda sua exposição e tome decisões com a calma de quem enxerga o quadro inteiro.</p>
+        </div>
+        <div class="depth-visual">
+          <div class="row"><span class="label">patrimônio_total</span><span>R$ 84.320,00</span></div>
+          <div class="row"><span class="label">variação_12m</span><span class="up">+18,4%</span></div>
+          <div class="row"><span class="label">aportes_2025</span><span>R$ 14.200,00</span></div>
+          <div class="row"><span class="label">ativos</span><span>23</span></div>
+          <div class="row"><span class="label">ciclos_atravessados</span><span class="up">∞</span></div>
+        </div>
       </div>
-      <div class="feature-card">
-        <span class="feature-icon">📈</span>
-        <h3 class="feature-title">Desempenho real</h3>
-        <p class="feature-desc">Veja quanto cada ativo rendeu de verdade, com histórico de preços e variações que fazem sentido para o investidor brasileiro.</p>
+    </div>
+  </section>
+
+  <!-- PROVA SOCIAL -->
+  <section class="bloco">
+    <div class="wrap">
+      <p class="section-label">Quem usa</p>
+      <h2 class="section-title">Investidores no comando</h2>
+      <p class="section-intro">O que dizem as pessoas que já usam o Pacter no dia a dia.</p>
+      <!-- ============================================================ -->
+      <!-- PLACEHOLDER 5 — DEPOIMENTOS REAIS                            -->
+      <!-- Troque textos, nomes e iniciais pelos depoimentos reais.     -->
+      <!-- ============================================================ -->
+      <div class="depo-grid">
+        <div class="depo-card">
+          <p class="depo-text">“[Depoimento real sobre enxergar o portfólio inteiro em um só lugar.]”</p>
+          <div class="depo-author"><div class="depo-avatar">??</div><div><div class="depo-name">[Nome do usuário]</div><div class="depo-role">[Cidade · perfil]</div></div></div>
+        </div>
+        <div class="depo-card">
+          <p class="depo-text">“[Depoimento real sobre largar a planilha ou ver o desempenho real.]”</p>
+          <div class="depo-author"><div class="depo-avatar">??</div><div><div class="depo-name">[Nome do usuário]</div><div class="depo-role">[Cidade · perfil]</div></div></div>
+        </div>
+        <div class="depo-card">
+          <p class="depo-text">“[Depoimento real sobre confiança, controle ou clareza.]”</p>
+          <div class="depo-author"><div class="depo-avatar">??</div><div><div class="depo-name">[Nome do usuário]</div><div class="depo-role">[Cidade · perfil]</div></div></div>
+        </div>
       </div>
-      <div class="feature-card">
-        <span class="feature-icon">🔒</span>
-        <h3 class="feature-title">Seus dados, sua conta</h3>
-        <p class="feature-desc">Nenhuma senha de corretora é solicitada. Você insere os dados manualmente — o controle é sempre seu.</p>
-      </div>
-      <div class="feature-card">
-        <span class="feature-icon">💡</span>
-        <h3 class="feature-title">Insights automáticos</h3>
-        <p class="feature-desc">Pacter identifica padrões e concentrações no seu portfólio, ajudando você a tomar decisões com mais clareza.</p>
-      </div>
-      <div class="feature-card">
-        <span class="feature-icon">🇧🇷</span>
-        <h3 class="feature-title">Feito para o Brasil</h3>
-        <p class="feature-desc">Moeda, tributação e ativos brasileiros tratados como cidadãos de primeira classe — não como adaptações de apps estrangeiros.</p>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="bloco">
+    <div class="wrap">
+      <p class="section-label">Dúvidas frequentes</p>
+      <h2 class="section-title">Antes de baixar</h2>
+      <div class="faq-list">
+        <div class="faq-item"><button class="faq-q">O Pacter é realmente gratuito? <span class="sinal">+</span></button><div class="faq-a"><p>Sim. O Pacter é gratuito para uso pessoal. Você baixa, instala e usa sem custo.</p></div></div>
+        <div class="faq-item"><button class="faq-q">Preciso informar a senha da minha corretora? <span class="sinal">+</span></button><div class="faq-a"><p>Não. O Pacter nunca pede senha de corretora ou banco. Você insere seus ativos e movimentações — o controle dos dados é sempre seu.</p></div></div>
+        <div class="faq-item"><button class="faq-q">Funciona com qual corretora? <span class="sinal">+</span></button><div class="faq-a"><p>Como você cadastra os ativos manualmente (ou importa o extrato da B3), o Pacter funciona independentemente da corretora que você usa.</p></div></div>
+        <div class="faq-item"><button class="faq-q">Meus dados ficam seguros? <span class="sinal">+</span></button><div class="faq-a"><p>Seus dados ficam vinculados à sua conta e protegidos. O Pacter não compartilha suas informações financeiras com terceiros.</p></div></div>
+        <div class="faq-item"><button class="faq-q">Em quais sistemas roda? <span class="sinal">+</span></button><div class="faq-a"><p>Atualmente o Pacter é um aplicativo para Windows (10 ou superior).</p></div></div>
       </div>
     </div>
   </section>
 
   <!-- CTA FINAL -->
-  <section class="cta-section" id="download">
-    <h2 class="cta-title">Comece agora, é grátis</h2>
-    <p class="cta-sub">Instale em minutos e tenha seu portfólio consolidado hoje.</p>
-    <a href="https://github.com/Vitor-lahn/Pacter-release/releases/latest" class="btn-primary">
-      ⬇ Baixar Pacter para Windows
-    </a>
-    <br />
-    <span class="os-badge">🪟 Windows 10 ou superior</span>
+  <section class="cta-final" id="download">
+    <div class="wrap">
+      <h2>Assuma o comando hoje</h2>
+      <p>Instale em minutos e tenha a visão real do seu patrimônio.</p>
+      <a href="https://github.com/Vitor-lahn/Pacter-release/releases/latest" class="btn-primary">⬇ Baixar Pacter para Windows</a>
+      <br />
+      <span class="os-badge">🪟 Windows 10 ou superior</span>
+    </div>
   </section>
 
-  <!-- FOOTER -->
   <footer>
     <p>© 2025 Pacter · <a href="https://github.com/Vitor-lahn/Pacter-release" target="_blank" rel="noopener">GitHub</a></p>
   </footer>
 
   <script>
-    // Contador animado nos stats
     function animarContador(el) {
-      const target = parseInt(el.dataset.target, 10);
-      if (isNaN(target)) return;
-
-      const duracao = 1200;
-      const inicio = performance.now();
-
-      function step(agora) {
+      const alvo = parseInt(el.dataset.target, 10);
+      if (isNaN(alvo)) return;
+      const duracao = 1200, inicio = performance.now();
+      function passo(agora) {
         const progresso = Math.min((agora - inicio) / duracao, 1);
         const easing = 1 - Math.pow(1 - progresso, 3);
-        el.textContent = Math.floor(easing * target) + '+';
-        if (progresso < 1) requestAnimationFrame(step);
+        el.textContent = Math.floor(easing * alvo) + '+';
+        if (progresso < 1) requestAnimationFrame(passo);
       }
-
-      requestAnimationFrame(step);
+      requestAnimationFrame(passo);
     }
-
-    // Dispara quando o elemento entra na tela
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          animarContador(entry.target);
-          observer.unobserve(entry.target);
-        }
-      });
+    const obs = new IntersectionObserver((entradas) => {
+      entradas.forEach((e) => { if (e.isIntersecting) { animarContador(e.target); obs.unobserve(e.target); } });
     }, { threshold: 0.5 });
+    document.querySelectorAll('[data-target]').forEach((el) => obs.observe(el));
 
-    document.querySelectorAll('[data-target]').forEach(el => observer.observe(el));
+    document.querySelectorAll('.faq-q').forEach((botao) => {
+      botao.addEventListener('click', () => botao.parentElement.classList.toggle('aberto'));
+    });
   </script>
 
 </body>
