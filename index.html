@@ -150,30 +150,73 @@
     .shot-frame .icon { font-size: 2.5rem; opacity: 0.35; }
     .shot-frame code { font-family: var(--mono); font-size: 0.78rem; }
 
-    /* FEATURES */
-    .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem; }
-    .feature-card { background: var(--painel); border: 1px solid var(--borda); border-radius: 13px; padding: 1.75rem; transition: border-color 0.2s; }
-    .feature-card:hover { border-color: var(--verde-comando); }
+    /* ===== CARROSSEL — Ato 2 (card central em destaque, vizinhos espiando) ===== */
+    .carousel { position: relative; }
+    .carousel-viewport {
+      --slide-w: 80vw;                /* largura do card no celular */
+      display: flex; gap: 1rem;
+      overflow-x: auto; overflow-y: hidden;
+      scroll-snap-type: x mandatory; scroll-behavior: smooth;
+      padding-block: 0.5rem;
+      /* o respiro lateral faz o primeiro e o último card também centralizarem */
+      padding-inline: max(1rem, calc(50% - var(--slide-w) / 2));
+      scroll-padding-inline: max(1rem, calc(50% - var(--slide-w) / 2));
+      scrollbar-width: none; -ms-overflow-style: none;
+    }
+    .carousel-viewport::-webkit-scrollbar { display: none; }
+
+    .c-slide {
+      flex: 0 0 var(--slide-w); scroll-snap-align: center;
+      background: var(--painel); border: 1px solid var(--borda);
+      border-radius: 13px; padding: 1.9rem;
+      display: flex; flex-direction: column; transition: border-color 0.2s;
+    }
+    .c-slide:hover { border-color: var(--verde-comando); }
+
+    .c-arrow {
+      display: none;                  /* no celular o gesto é deslizar */
+      position: absolute; top: 50%; transform: translateY(-50%);
+      width: 44px; height: 44px; border-radius: 50%; z-index: 5;
+      background: var(--painel); border: 1px solid var(--borda); color: var(--branco-frio);
+      font-family: var(--sans); font-size: 1.3rem; line-height: 1; cursor: pointer;
+      align-items: center; justify-content: center;
+      transition: border-color 0.15s, opacity 0.15s;
+    }
+    .c-arrow:hover { border-color: var(--verde-comando); }
+    .c-arrow:disabled { opacity: 0.3; cursor: default; }
+    .c-arrow.prev { left: 0.5rem; }
+    .c-arrow.next { right: 0.5rem; }
+
+    .c-dots { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; margin-top: 1.75rem; }
+    .c-dot { width: 8px; height: 8px; padding: 0; border: none; border-radius: 50%; background: var(--borda); cursor: pointer; transition: background 0.2s, transform 0.2s; }
+    .c-dot.active { background: var(--verde-comando); transform: scale(1.35); }
+
+    @media (min-width: 760px) {
+      .carousel { max-width: 720px; margin-inline: auto; }
+      .carousel-viewport { --slide-w: 560px; }
+      .c-arrow { display: inline-flex; }
+      .c-arrow.prev { left: -0.5rem; }
+      .c-arrow.next { right: -0.5rem; }
+    }
+
+    /* conteúdo dos cards — funcionalidades */
     .feature-icon { font-size: 1.5rem; margin-bottom: 0.9rem; display: block; }
     .feature-title { font-size: 1.05rem; font-weight: 600; margin-bottom: 0.5rem; }
     .feature-desc { font-size: 0.92rem; color: var(--cinza); }
 
-    /* CAMADA PROFUNDA */
-    .depth { background: var(--verde-fundo-2); border-block: 1px solid var(--borda); }
-    .depth-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
-    .depth-text h2 { font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 700; letter-spacing: -0.02em; margin-bottom: 1.25rem; line-height: 1.2; }
-    .depth-text p { color: var(--prata); margin-bottom: 1rem; }
-    .depth-visual { font-family: var(--mono); background: var(--painel); border: 1px solid var(--borda); border-radius: 12px; padding: 1.5rem; font-size: 0.85rem; line-height: 2; }
-    .depth-visual .row { display: flex; justify-content: space-between; }
-    .depth-visual .up { color: var(--verde-comando); }
-    .depth-visual .label { color: var(--cinza); }
+    /* conteúdo do card — "atravessa ciclos" (antiga seção Camada Profunda) */
+    .c-eyebrow { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--verde-comando); margin-bottom: 0.75rem; }
+    .c-ciclos-title { font-size: 1.25rem; font-weight: 700; letter-spacing: -0.01em; line-height: 1.2; margin-bottom: 0.6rem; }
+    .c-ciclos-text { font-size: 0.92rem; color: var(--prata); margin-bottom: 1.25rem; }
+    .c-data { font-family: var(--mono); font-size: 0.85rem; line-height: 2; margin-top: auto; border-top: 1px solid var(--borda); padding-top: 1rem; }
+    .c-data .row { display: flex; justify-content: space-between; gap: 1rem; }
+    .c-data .label { color: var(--cinza); }
+    .c-data .up { color: var(--verde-comando); }
 
-    /* PROVA SOCIAL */
-    .depo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; }
-    .depo-card { background: var(--painel); border: 1px solid var(--borda); border-radius: 13px; padding: 1.75rem; }
+    /* conteúdo dos cards — depoimentos */
     .depo-text { color: var(--branco-frio); margin-bottom: 1.25rem; font-style: italic; }
-    .depo-author { display: flex; align-items: center; gap: 0.75rem; }
-    .depo-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--borda); display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 0.85rem; color: var(--verde-comando); }
+    .depo-author { display: flex; align-items: center; gap: 0.75rem; margin-top: auto; }
+    .depo-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--borda); display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 0.85rem; color: var(--verde-comando); flex-shrink: 0; }
     .depo-name { font-weight: 600; font-size: 0.9rem; }
     .depo-role { font-size: 0.8rem; color: var(--cinza); }
 
@@ -203,13 +246,19 @@
 
     /* RESPONSIVO */
     @media (max-width: 760px) {
-      .depth-grid { grid-template-columns: 1fr; gap: 2rem; }
       .stats { gap: 2rem; }
     }
-    @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+    @media (prefers-reduced-motion: reduce) {
+      * { transition: none !important; animation: none !important; }
+      html, .carousel-viewport { scroll-behavior: auto !important; }
+    }
   </style>
 </head>
 <body>
+
+  <!-- ===================================================================== -->
+  <!-- ATO 1 — APRESENTAÇÃO (o que é o Pacter: pitch + ver o produto)         -->
+  <!-- ===================================================================== -->
 
   <nav>
     <a href="#" class="nav-brand">
@@ -267,23 +316,6 @@
     </div>
   </section>
 
-  <!-- FEATURES -->
-  <section class="bloco" id="funcionalidades">
-    <div class="wrap">
-      <p class="section-label">Funcionalidades</p>
-      <h2 class="section-title">Tudo que você precisa acompanhar</h2>
-      <p class="section-intro">Do portfólio ao fluxo de caixa, uma visão única do que é seu.</p>
-      <div class="features-grid">
-        <div class="feature-card"><span class="feature-icon">📊</span><h3 class="feature-title">Portfólio consolidado</h3><p class="feature-desc">Ações, FIIs, ETFs e renda fixa de qualquer corretora reunidos em uma visão única, com preços atualizados automaticamente.</p></div>
-        <div class="feature-card"><span class="feature-icon">🏦</span><h3 class="feature-title">Controle bancário</h3><p class="feature-desc">Cadastre suas contas e acompanhe o fluxo de caixa junto com seus investimentos, sem alternar entre apps.</p></div>
-        <div class="feature-card"><span class="feature-icon">📈</span><h3 class="feature-title">Desempenho real</h3><p class="feature-desc">Veja quanto cada ativo rendeu de verdade, com histórico e variações que fazem sentido para o investidor brasileiro.</p></div>
-        <div class="feature-card"><span class="feature-icon">🔒</span><h3 class="feature-title">Seus dados, seu comando</h3><p class="feature-desc">Nenhuma senha de corretora é solicitada. Você insere os dados — o controle é sempre seu.</p></div>
-        <div class="feature-card"><span class="feature-icon">💡</span><h3 class="feature-title">Insights automáticos</h3><p class="feature-desc">O Pacter identifica padrões e concentrações no seu portfólio, ajudando você a decidir com clareza.</p></div>
-        <div class="feature-card"><span class="feature-icon">🇧🇷</span><h3 class="feature-title">Feito para o Brasil</h3><p class="feature-desc">Moeda, tributação e ativos brasileiros tratados como cidadãos de primeira classe — não como adaptação de apps estrangeiros.</p></div>
-      </div>
-    </div>
-  </section>
-
   <!-- SCREENSHOT -->
   <section class="bloco">
     <div class="wrap">
@@ -301,53 +333,71 @@
     </div>
   </section>
 
-  <!-- CAMADA PROFUNDA — leitura profunda (recompensa o investidor maduro) -->
-  <section class="bloco depth">
+  <!-- ===================================================================== -->
+  <!-- ATO 2 — POR QUE BAIXAR (carrossel de argumentos)                      -->
+  <!-- Ordem dos cards: 6 funcionalidades → "atravessa ciclos" → 3 depoimentos -->
+  <!-- ===================================================================== -->
+  <section class="bloco" id="recursos">
     <div class="wrap">
-      <div class="depth-grid">
-        <div class="depth-text">
-          <p class="section-label" style="text-align:left;">Construído para durar</p>
-          <h2>Patrimônio que atravessa ciclos</h2>
-          <p>Mercados sobem e descem. O Pacter foi pensado para quem olha além do trade de hoje — para quem constrói uma fundação que continua de pé através das crises.</p>
-          <p>Acompanhe a evolução real do seu patrimônio ao longo do tempo, entenda sua exposição e tome decisões com a calma de quem enxerga o quadro inteiro.</p>
-        </div>
-        <div class="depth-visual">
-          <div class="row"><span class="label">patrimônio_total</span><span>R$ 84.320,00</span></div>
-          <div class="row"><span class="label">variação_12m</span><span class="up">+18,4%</span></div>
-          <div class="row"><span class="label">aportes_2025</span><span>R$ 14.200,00</span></div>
-          <div class="row"><span class="label">ativos</span><span>23</span></div>
-          <div class="row"><span class="label">ciclos_atravessados</span><span class="up">∞</span></div>
-        </div>
+      <p class="section-label">Funcionalidades</p>
+      <h2 class="section-title">Tudo que você precisa acompanhar</h2>
+      <p class="section-intro">Deslize para o lado: do portfólio ao fluxo de caixa, uma visão única do que é seu.</p>
+    </div>
+
+    <div class="carousel">
+      <button class="c-arrow prev" aria-label="Card anterior">‹</button>
+
+      <div class="carousel-viewport">
+        <!-- 1–6: funcionalidades -->
+        <article class="c-slide"><span class="feature-icon">📊</span><h3 class="feature-title">Portfólio consolidado</h3><p class="feature-desc">Ações, FIIs, ETFs e renda fixa de qualquer corretora reunidos em uma visão única, com preços atualizados automaticamente.</p></article>
+        <article class="c-slide"><span class="feature-icon">🏦</span><h3 class="feature-title">Controle bancário</h3><p class="feature-desc">Cadastre suas contas e acompanhe o fluxo de caixa junto com seus investimentos, sem alternar entre apps.</p></article>
+        <article class="c-slide"><span class="feature-icon">📈</span><h3 class="feature-title">Desempenho real</h3><p class="feature-desc">Veja quanto cada ativo rendeu de verdade, com histórico e variações que fazem sentido para o investidor brasileiro.</p></article>
+        <article class="c-slide"><span class="feature-icon">🔒</span><h3 class="feature-title">Seus dados, seu comando</h3><p class="feature-desc">Nenhuma senha de corretora é solicitada. Você insere os dados — o controle é sempre seu.</p></article>
+        <article class="c-slide"><span class="feature-icon">💡</span><h3 class="feature-title">Insights automáticos</h3><p class="feature-desc">O Pacter identifica padrões e concentrações no seu portfólio, ajudando você a decidir com clareza.</p></article>
+        <article class="c-slide"><span class="feature-icon">🇧🇷</span><h3 class="feature-title">Feito para o Brasil</h3><p class="feature-desc">Moeda, tributação e ativos brasileiros tratados como cidadãos de primeira classe — não como adaptação de apps estrangeiros.</p></article>
+
+        <!-- 7: card "atravessa ciclos" -->
+        <article class="c-slide">
+          <p class="c-eyebrow">Construído para durar</p>
+          <h3 class="c-ciclos-title">Patrimônio que atravessa ciclos</h3>
+          <p class="c-ciclos-text">Para quem olha além do trade de hoje e constrói uma fundação que continua de pé através das crises.</p>
+          <div class="c-data">
+            <div class="row"><span class="label">patrimônio_total</span><span>R$ 84.320,00</span></div>
+            <div class="row"><span class="label">variação_12m</span><span class="up">+18,4%</span></div>
+            <div class="row"><span class="label">aportes_2025</span><span>R$ 14.200,00</span></div>
+            <div class="row"><span class="label">ativos</span><span>23</span></div>
+            <div class="row"><span class="label">ciclos_atravessados</span><span class="up">∞</span></div>
+          </div>
+        </article>
+
+        <!-- 8–10: depoimentos -->
+        <!-- ============================================================ -->
+        <!-- PLACEHOLDER 5 — DEPOIMENTOS REAIS                            -->
+        <!-- Troque textos, nomes e iniciais pelos depoimentos reais.     -->
+        <!-- ============================================================ -->
+        <article class="c-slide">
+          <p class="depo-text">“[Depoimento real sobre enxergar o portfólio inteiro em um só lugar.]”</p>
+          <div class="depo-author"><div class="depo-avatar">??</div><div><div class="depo-name">[Nome do usuário]</div><div class="depo-role">[Cidade · perfil]</div></div></div>
+        </article>
+        <article class="c-slide">
+          <p class="depo-text">“[Depoimento real sobre largar a planilha ou ver o desempenho real.]”</p>
+          <div class="depo-author"><div class="depo-avatar">??</div><div><div class="depo-name">[Nome do usuário]</div><div class="depo-role">[Cidade · perfil]</div></div></div>
+        </article>
+        <article class="c-slide">
+          <p class="depo-text">“[Depoimento real sobre confiança, controle ou clareza.]”</p>
+          <div class="depo-author"><div class="depo-avatar">??</div><div><div class="depo-name">[Nome do usuário]</div><div class="depo-role">[Cidade · perfil]</div></div></div>
+        </article>
       </div>
+
+      <button class="c-arrow next" aria-label="Próximo card">›</button>
+
+      <div class="c-dots"></div>
     </div>
   </section>
 
-  <!-- PROVA SOCIAL -->
-  <section class="bloco">
-    <div class="wrap">
-      <p class="section-label">Quem usa</p>
-      <h2 class="section-title">Investidores no comando</h2>
-      <p class="section-intro">O que dizem as pessoas que já usam o Pacter no dia a dia.</p>
-      <!-- ============================================================ -->
-      <!-- PLACEHOLDER 5 — DEPOIMENTOS REAIS                            -->
-      <!-- Troque textos, nomes e iniciais pelos depoimentos reais.     -->
-      <!-- ============================================================ -->
-      <div class="depo-grid">
-        <div class="depo-card">
-          <p class="depo-text">“[Depoimento real sobre enxergar o portfólio inteiro em um só lugar.]”</p>
-          <div class="depo-author"><div class="depo-avatar">??</div><div><div class="depo-name">[Nome do usuário]</div><div class="depo-role">[Cidade · perfil]</div></div></div>
-        </div>
-        <div class="depo-card">
-          <p class="depo-text">“[Depoimento real sobre largar a planilha ou ver o desempenho real.]”</p>
-          <div class="depo-author"><div class="depo-avatar">??</div><div><div class="depo-name">[Nome do usuário]</div><div class="depo-role">[Cidade · perfil]</div></div></div>
-        </div>
-        <div class="depo-card">
-          <p class="depo-text">“[Depoimento real sobre confiança, controle ou clareza.]”</p>
-          <div class="depo-author"><div class="depo-avatar">??</div><div><div class="depo-name">[Nome do usuário]</div><div class="depo-role">[Cidade · perfil]</div></div></div>
-        </div>
-      </div>
-    </div>
-  </section>
+  <!-- ===================================================================== -->
+  <!-- ATO 3 — BAIXAR (tirar dúvidas + baixar)                               -->
+  <!-- ===================================================================== -->
 
   <!-- FAQ -->
   <section class="bloco">
@@ -400,6 +450,62 @@
     document.querySelectorAll('.faq-q').forEach((botao) => {
       botao.addEventListener('click', () => botao.parentElement.classList.toggle('aberto'));
     });
+
+    /* ===== Carrossel — Ato 2: setas, pontinhos e card central ativo ===== */
+    const carrossel = document.querySelector('.carousel');
+    if (carrossel) {
+      const viewport = carrossel.querySelector('.carousel-viewport');
+      const slides = Array.from(viewport.querySelectorAll('.c-slide'));
+      const anterior = carrossel.querySelector('.c-arrow.prev');
+      const proximo = carrossel.querySelector('.c-arrow.next');
+      const pontos = carrossel.querySelector('.c-dots');
+
+      // um ponto por card
+      slides.forEach((_, i) => {
+        const ponto = document.createElement('button');
+        ponto.className = 'c-dot';
+        ponto.setAttribute('aria-label', 'Ir para o card ' + (i + 1));
+        ponto.addEventListener('click', () => irPara(i));
+        pontos.appendChild(ponto);
+      });
+
+      function irPara(i) {
+        const slide = slides[i];
+        if (!slide) return;
+        const alvo = slide.offsetLeft - (viewport.clientWidth - slide.clientWidth) / 2;
+        viewport.scrollTo({ left: alvo, behavior: 'smooth' });
+      }
+
+      function indiceCentral() {
+        const centro = viewport.scrollLeft + viewport.clientWidth / 2;
+        let melhor = 0, menorDist = Infinity;
+        slides.forEach((slide, i) => {
+          const meio = slide.offsetLeft + slide.clientWidth / 2;
+          const dist = Math.abs(meio - centro);
+          if (dist < menorDist) { menorDist = dist; melhor = i; }
+        });
+        return melhor;
+      }
+
+      function atualizar() {
+        const atual = indiceCentral();
+        pontos.querySelectorAll('.c-dot').forEach((p, i) => p.classList.toggle('active', i === atual));
+        anterior.disabled = atual === 0;
+        proximo.disabled = atual === slides.length - 1;
+      }
+
+      anterior.addEventListener('click', () => irPara(indiceCentral() - 1));
+      proximo.addEventListener('click', () => irPara(indiceCentral() + 1));
+
+      let aguardando = false;
+      viewport.addEventListener('scroll', () => {
+        if (aguardando) return;
+        aguardando = true;
+        requestAnimationFrame(() => { atualizar(); aguardando = false; });
+      });
+      window.addEventListener('resize', atualizar);
+      atualizar();
+    }
   </script>
 
 </body>
