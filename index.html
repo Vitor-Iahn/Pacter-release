@@ -112,10 +112,10 @@ title: Pacter
 
     /* ===================== SEÇÃO 2 — DESLIZE HORIZONTAL ===================== */
     /* Desktop: a seção prende na tela e o scroll vertical vira deslize lateral (o JS cuida disso). */
-    .recursos { position: relative; height: 600vh; }   /* 6 telas de altura = distância de scroll */
+    .recursos { --paineis: 3; position: relative; height: calc(var(--paineis) * 100vh); }   /* nº de telas; muda só aqui */
     .recursos-sticky { position: sticky; top: 0; height: 100vh; overflow: hidden; }
     .recursos-trilho {
-      display: flex; height: 100vh; width: 600vw;       /* 6 painéis de 100vw lado a lado */
+      display: flex; height: 100vh; width: calc(var(--paineis) * 100vw);   /* painéis de 100vw lado a lado */
       will-change: transform;
     }
     .painel {
@@ -127,6 +127,18 @@ title: Pacter
     .painel:nth-child(even) { background: var(--verde-fundo-2); }
     .painel-num { font-family: var(--mono); font-size: 0.78rem; letter-spacing: 0.18em; color: var(--verde-comando); }
     .painel-titulo { font-size: clamp(2rem, 6vw, 4rem); font-weight: 700; letter-spacing: -0.02em; }
+
+    /* ===================== SEÇÃO 3 — CALL TO ACTION ===================== */
+    /* Mesma pegada da seção 1 (reaproveita .hero-titulo, .hero-sub, .hero-acoes e os botões). */
+    .cta {
+      min-height: 100vh; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; text-align: center;
+      padding: 7rem 1.5rem; border-top: 1px solid var(--borda);
+      background:
+        radial-gradient(ellipse 80% 55% at 50% 100%, rgba(0, 200, 150, 0.14), transparent 70%),
+        linear-gradient(180deg, var(--verde-fundo-2) 0%, var(--verde-fundo) 100%);
+    }
+    .cta-nota { margin-top: 1.25rem; font-family: var(--mono); font-size: 0.78rem; color: var(--cinza); }
 
     /* ===================== RESPONSIVO ===================== */
     @media (max-width: 720px) {
@@ -182,7 +194,7 @@ title: Pacter
       <h1 class="hero-titulo">Veja a <em>verdade</em><br />sobre o seu dinheiro</h1>
       <p class="hero-sub">O Pacter reúne seus investimentos de qualquer corretora em um só lugar e mostra o desempenho real do seu patrimônio.</p>
       <div class="hero-acoes">
-        <a href="#download" class="btn-primario">⬇ Baixar para Windows</a>
+        <a href="#download" class="btn-primario">Baixar para Windows</a>
         <a href="#recursos" class="btn-secundario">Saber mais</a>
       </div>
     </section>
@@ -191,11 +203,22 @@ title: Pacter
     <section class="recursos" id="recursos">
       <div class="recursos-sticky">
         <div class="recursos-trilho">
-          <article class="painel"><span class="painel-num">01 / 06</span><h2 class="painel-titulo">Placeholder 1</h2></article>
-          <article class="painel"><span class="painel-num">02 / 06</span><h2 class="painel-titulo">Placeholder 2</h2></article>
-          <article class="painel"><span class="painel-num">03 / 06</span><h2 class="painel-titulo">Placeholder 3</h2></article>
+          <article class="painel"><span class="painel-num">01 / 03</span><h2 class="painel-titulo">Placeholder 1</h2></article>
+          <article class="painel"><span class="painel-num">02 / 03</span><h2 class="painel-titulo">Placeholder 2</h2></article>
+          <article class="painel"><span class="painel-num">03 / 03</span><h2 class="painel-titulo">Placeholder 3</h2></article>
         </div>
       </div>
+    </section>
+
+    <!-- ===================== SEÇÃO 3 ===================== -->
+    <section class="cta" id="download">
+      <h2 class="hero-titulo">Assuma o <em>comando</em> hoje</h2>
+      <p class="hero-sub">Instale em minutos e tenha a visão real do seu patrimônio. Grátis, para Windows.</p>
+      <div class="hero-acoes">
+        <a href="https://github.com/Vitor-lahn/Pacter-release/releases/latest" class="btn-primario" target="_blank" rel="noopener">Baixar para Windows</a>
+        <a href="https://github.com/Vitor-lahn/Pacter-release" class="btn-secundario" target="_blank" rel="noopener">Ver no GitHub</a>
+      </div>
+      <p class="cta-nota">Windows 10 ou superior</p>
     </section>
   </main>
 
@@ -224,8 +247,10 @@ title: Pacter
         trilho.style.transform = 'translateX(' + (-progresso(rect, total) * max) + 'px)';
       }
 
-      // encaixe magnético: ao parar de rolar, alinha no painel mais próximo
-      let timer;
+      // encaixe magnético: só completa a virada quando você arrasta LIMIAR (90%) rumo ao próximo painel
+      const LIMIAR = 0.9;
+      let timer, ultimoY = window.scrollY, direcao = 1;
+
       function encaixar() {
         if (!ehDesktop.matches || semMovimento.matches) return;
         const rect  = secao.getBoundingClientRect();
@@ -233,13 +258,25 @@ title: Pacter
         if (rect.top > 0 || rect.top < -total) return;        // só quando a seção está presa
         const p     = progresso(rect, total);
         const passo = 1 / (paineis.length - 1);
-        const alvo  = Math.round(p / passo) * passo;
+        const pos   = p / passo;                              // posição contínua entre os painéis
+        const base  = Math.floor(pos);
+        const frac  = pos - base;                             // quanto andou rumo ao próximo (0→1)
+        // só encaixa ao cruzar 90% no sentido do movimento; abaixo disso, fica livre (não puxa de volta)
+        let indice;
+        if (direcao >= 0 && frac >= LIMIAR)         indice = base + 1;   // indo pra frente, passou de 90%
+        else if (direcao < 0 && frac <= 1 - LIMIAR) indice = base;       // voltando, passou de 90% no sentido inverso
+        else return;                                                     // zona livre: descansa onde parou
+        indice = Math.max(0, Math.min(indice, paineis.length - 1));
+        const alvo = indice * passo;
         if (Math.abs(p - alvo) < 0.003) return;               // já encaixado
         const topoSecao = window.scrollY + rect.top;
         window.scrollTo({ top: topoSecao + alvo * total, behavior: 'smooth' });
       }
 
       window.addEventListener('scroll', function () {
+        const y = window.scrollY;
+        if (y > ultimoY) direcao = 1; else if (y < ultimoY) direcao = -1;
+        ultimoY = y;
         aoRolar();
         clearTimeout(timer);
         timer = setTimeout(encaixar, 130);
