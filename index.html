@@ -128,6 +128,13 @@ title: Pacter
     .painel-num { font-family: var(--mono); font-size: 0.78rem; letter-spacing: 0.18em; color: var(--verde-comando); }
     .painel-titulo { font-size: clamp(2rem, 6vw, 4rem); font-weight: 700; letter-spacing: -0.02em; }
 
+    /* painel com gráfico (placeholder 2) */
+    .painel-grafico { justify-content: center; padding: 5.5rem 1.5rem 2.5rem; }
+    .grafico-wrap { width: 100%; max-width: 980px; height: 100%; display: flex; flex-direction: column; }
+    .grafico-titulo { font-size: clamp(1.3rem, 3vw, 1.9rem); font-weight: 700; letter-spacing: -0.01em; margin: 0.4rem 0 1.25rem; }
+    .grafico-canvas { position: relative; flex: 1 1 auto; min-height: 300px; width: 100%; }
+    .grafico-nota { flex: 0 0 auto; margin-top: 0.75rem; font-family: var(--mono); font-size: 0.72rem; color: var(--cinza); }
+
     /* ===================== SEÇÃO 3 — CALL TO ACTION ===================== */
     /* Mesma pegada da seção 1 (reaproveita .hero-titulo, .hero-sub, .hero-acoes e os botões). */
     .cta {
@@ -204,7 +211,14 @@ title: Pacter
       <div class="recursos-sticky">
         <div class="recursos-trilho">
           <article class="painel"><span class="painel-num">01 / 03</span><h2 class="painel-titulo">Placeholder 1</h2></article>
-          <article class="painel"><span class="painel-num">02 / 03</span><h2 class="painel-titulo">Placeholder 2</h2></article>
+          <article class="painel painel-grafico">
+            <div class="grafico-wrap">
+              <span class="painel-num">02 / 03</span>
+              <h2 class="grafico-titulo">Selic, IPCA e juros reais</h2>
+              <div class="grafico-canvas"><canvas id="graficoJuros"></canvas></div>
+              <p class="grafico-nota">Dados de exemplo — serão substituídos pela fonte oficial.</p>
+            </div>
+          </article>
           <article class="painel"><span class="painel-num">03 / 03</span><h2 class="painel-titulo">Placeholder 3</h2></article>
         </div>
       </div>
@@ -213,14 +227,16 @@ title: Pacter
     <!-- ===================== SEÇÃO 3 ===================== -->
     <section class="cta" id="download">
       <h2 class="hero-titulo">Assuma o <em>comando</em> hoje</h2>
-      <p class="hero-sub">Instale em minutos e tenha a visão real do seu patrimônio. Grátis, para Windows.</p>
+      <p class="hero-sub">Instale em minutos e tenha a visão real do seu patrimônio.</p>
       <div class="hero-acoes">
         <a href="https://github.com/Vitor-Iahn/Pacter-release/releases/download/0.27/Pacter.Launcher.exe" class="btn-primario" target="_blank" rel="noopener">Baixar para Windows</a>
-        <a href="https://pacterapp.com.br" class="btn-secundario" target="_blank" rel="noopener">Saiba mais</a>
+        <a href="https://pacterapp.com.br/" target="_blank" rel="noopener">Ver no GitHub</a>
       </div>
       <p class="cta-nota">Windows 10 ou superior</p>
     </section>
   </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
 
   <script>
     /* ===== Seção 2 — deslize horizontal no desktop ===== */
@@ -283,6 +299,47 @@ title: Pacter
       }, { passive: true });
       window.addEventListener('resize', aoRolar);
       aoRolar();
+    })();
+
+    /* ===== Gráfico — Placeholder 2 (Chart.js) ===== */
+    (function () {
+      const canvas = document.getElementById('graficoJuros');
+      if (!canvas || typeof Chart === 'undefined') return;
+
+      // Dados de exemplo (% ao ano). Serão trocados pela fonte oficial depois.
+      const datas = ['01/21','04/21','07/21','10/21','12/21','03/22','06/22','09/22','12/22','03/23','06/23','09/23','12/23','03/24','06/24','09/24','12/24','03/25','06/25','09/25','12/25'];
+      const selic = [2.00,2.75,4.25,6.25,9.25,11.75,13.25,13.75,13.75,13.75,13.75,12.75,11.75,10.75,10.50,10.75,12.25,14.25,15.00,15.00,15.00];
+      const ipca  = [4.56,6.76,8.99,10.67,10.06,11.30,11.89,7.17,5.79,4.65,3.16,5.19,4.62,3.93,4.23,4.42,4.83,5.48,5.35,4.80,4.50];
+      // juros reais pela equação de Fisher: (1+selic)/(1+ipca) - 1
+      const real = selic.map((s, i) => ((1 + s / 100) / (1 + ipca[i] / 100) - 1) * 100);
+
+      Chart.defaults.font.family = "'Inter', sans-serif";
+      Chart.defaults.color = '#C9D1D9';
+
+      new Chart(canvas, {
+        type: 'line',
+        data: {
+          labels: datas,
+          datasets: [
+            { label: 'Selic',       data: selic, borderColor: '#00C896', borderWidth: 2, tension: 0.3, pointRadius: 0 },
+            { label: 'IPCA',        data: ipca,  borderColor: '#F4B740', borderWidth: 2, tension: 0.3, pointRadius: 0 },
+            { label: 'Juros reais', data: real,  borderColor: '#5AA9FF', borderWidth: 2, tension: 0.3, pointRadius: 0 }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: { mode: 'index', intersect: false },
+          scales: {
+            y: { ticks: { callback: v => v + '%' }, grid: { color: 'rgba(31, 67, 56, 0.55)' } },
+            x: { grid: { display: false }, ticks: { maxRotation: 0, autoSkip: true, maxTicksLimit: 8 } }
+          },
+          plugins: {
+            legend: { labels: { usePointStyle: true, boxWidth: 8 } },
+            tooltip: { callbacks: { label: c => c.dataset.label + ': ' + c.parsed.y.toFixed(2) + '% a.a.' } }
+          }
+        }
+      });
     })();
   </script>
 
