@@ -253,6 +253,14 @@ title: Pacter
       });
     })();
 
+    /* ===== Analytics: clique em download ===== */
+    document.querySelectorAll('[data-download]').forEach(function (botao) {
+      botao.addEventListener('click', function () {
+        if (typeof gtag !== 'function') return;   // analytics bloqueado ou ausente: a página segue normal
+        gtag('event', 'clique_download', { liberado: Boolean(LINK_DOWNLOAD) });
+      });
+    });
+
     /* ===== Seção 2 — deslize horizontal no desktop ===== */
     (function () {
       const secao  = document.querySelector('.recursos');
