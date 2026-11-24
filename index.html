@@ -148,6 +148,17 @@ title: Pacter
     }
     .cta-nota { margin-top: 1.25rem; font-family: var(--mono); font-size: 0.78rem; color: var(--cinza); }
 
+    /* ===================== DISCORD FLUTUANTE ===================== */
+    .discord-flutuante {
+      position: fixed; right: 1.5rem; bottom: 1.5rem; z-index: 50;
+      width: 56px; height: 56px; border-radius: 50%;
+      background: var(--painel); border: 1px solid var(--borda);
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+      transition: transform 0.15s, border-color 0.15s;
+    }
+    .discord-flutuante:hover { transform: translateY(-2px); border-color: var(--verde-comando); }
+    
     /* ===================== RESPONSIVO ===================== */
     @media (max-width: 720px) {
       .menu { display: none; }  /* no celular o menu fica oculto por espaço — hambúrguer pode entrar depois */
@@ -237,6 +248,11 @@ title: Pacter
     </section>
   </main>
 
+    <a href="https://discord.gg/fukcHwrGnt" class="discord-flutuante" target="_blank" rel="noopener"
+     aria-label="Entrar no Discord do Pacter" title="Entrar no Discord" data-discord="flutuante">
+    <img src="discord.svg" alt="" width="28" height="28" />
+  </a>
+
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
 
   <script>
@@ -258,6 +274,14 @@ title: Pacter
       botao.addEventListener('click', function () {
         if (typeof gtag !== 'function') return;   // analytics bloqueado ou ausente: a página segue normal
         gtag('event', 'clique_download', { liberado: Boolean(LINK_DOWNLOAD) });
+      });
+    });
+
+    /* ===== Analytics: clique no Discord ===== */
+    document.querySelectorAll('[data-discord]').forEach(function (botao) {
+      botao.addEventListener('click', function () {
+        if (typeof gtag !== 'function') return;   // analytics bloqueado ou ausente: o link funciona normal
+        gtag('event', 'clique_discord', { local: botao.dataset.discord });
       });
     });
 
